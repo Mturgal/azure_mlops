@@ -36,4 +36,7 @@ jobs:
     - name: Test with pytest
       run: |
         pip install pytest pytest-cov
+        pip install mlflow
+        pip install pandas
+        pip install scikit-learn
         pytest .
