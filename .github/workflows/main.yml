@@ -1,0 +1,13 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  print-username:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Placeholder
+      run: |
+        echo "Will add code checks here in next challenge"
