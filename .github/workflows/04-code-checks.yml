@@ -23,4 +23,17 @@ jobs:
       run: | 
         flake8 src/model/
 
-
+  job2:
+    name: unit_tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@main
+    - name: Use Python version 3.8
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.8'
+    - name: Test with pytest
+      run: |
+        pip install pytest pytest-cov
+        pytest .
