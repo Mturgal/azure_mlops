@@ -1,47 +1,9 @@
 name: Actions
 on:
-  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
 
-  #on:
-  #  pull_request:
-  #    branches:
-  #      - main
-
-jobs:
-  #- deployment: publishPipeline
-  #  displayName: 'Model Training'
-  #  pool:
-  #    vmImage: 'Ubuntu-18.04'
-  #  environment: dev
-  #  strategy:
-  #   runOnce:
-  #     deploy:
-  #      steps:
-  #      - template: aml-steps.yml
-  #        parameters:
-  #          serviceconnectionname: 'spn-aml-workspace-dev'
-  #  job1:
-  #    name: experiment
-  #    runs-on: ubuntu-latest
-  #    environment:
-  #      name: dev
-  #      url: https://github.com
-  #    steps:
-  #    - name: Check out repo
-  #      uses: actions/checkout@main
-  #    - name: Use Python version 3.8
-  #      uses: actions/setup-python@v3
-  #      with:
-  #        python-version: '3.8'
-  #    - name: experiment
-  #      run: |
-  #        pip install pytest pytest-cov
-  #        pip install mlflow
-  #        pip install pandas
-  #        pip install scikit-learn
-  #        python train.py  
-  #        --training_data ${{inputs.training_data}}
-  #        --reg_rate ${{inputs.reg_rate}}
 
   experiment:
     name: experiment
@@ -63,6 +25,7 @@ jobs:
       run: az ml job create --file src/experiment.yml --resource-group Learn_MLOps --workspace-name MLOps_WS
 
   production:
+    needs: experiment
     name: production
     runs-on: ubuntu-latest
     environment:
