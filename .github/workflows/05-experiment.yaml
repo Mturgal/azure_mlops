@@ -56,7 +56,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZURE_CREDENTIALS_DEV}}
+        creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: set current directory
       run: cd src
     - name: run pipeline
@@ -75,7 +75,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZURE_CREDENTIALS_PROD}}
+        creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: set current directory
       run: cd src
     - name: run pipeline
