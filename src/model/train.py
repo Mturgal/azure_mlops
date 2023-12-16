@@ -23,6 +23,7 @@ def main(args):
     train_model(args.reg_rate, X_train, X_test, y_train, y_test)
 
 
+
 def get_csvs_df(path):
     if not os.path.exists(path):
         raise RuntimeError(f"Cannot use non-existent path provided: {path}")
@@ -41,7 +42,15 @@ def split_data(df):
 
 def train_model(reg_rate, X_train, X_test, y_train, y_test):
     # train model
-    LogisticRegression(C=1/reg_rate, solver="liblinear").fit(X_train, y_train)
+    lg = LogisticRegression(C=1/reg_rate, solver="liblinear")
+    lg.fit(X_train, y_train)
+
+    print("Registering the model via MLFlow")
+    mlflow.sklearn.log_model(
+        sk_model=lg,
+        registered_model_name='log_regression',
+        artifact_path='log_regression',
+    )
 
 
 def parse_args():
