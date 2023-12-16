@@ -66,7 +66,7 @@ jobs:
         #      az ml ${{ inputs.endpoint_type }}-endpoint create --name ${{ inputs.endpoint_name }} \
         #      -f ${{ github.workspace }}/${{ inputs.endpoint_file }} --resource-group ${{ inputs.resource_group }} \
         #      --workspace-name ${{ inputs.workspace_name }}
-              az ml online-endpoint create --name pipeline-endpoint  --resource-group Learn_MLOps --workspace-name mlops_ws_prod
+              az ml online-endpoint create --name pipeline-endpoint-1  --resource-group Learn_MLOps --workspace-name mlops_ws_prod
 
 
 
