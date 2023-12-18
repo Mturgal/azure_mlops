@@ -2,9 +2,9 @@ name: deployment-pipeline
     
 on:
   workflow_dispatch:
+
 jobs:
   create-endpoint:
-    needs: [experiment, production]
     name: create-endpoint
     runs-on: ubuntu-latest
     environment:
