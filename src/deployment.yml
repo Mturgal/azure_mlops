@@ -2,5 +2,5 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.sch
 name: mlflow-deployment
 endpoint_name: pipeline-endpoint-2
 model: azureml:log_regression:11
-instance_type: Standard_DS3_v2
+instance_type: Standard_D2s_v3
 instance_count: 1
