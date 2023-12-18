@@ -3,45 +3,6 @@ name: deployment-pipeline
 on:
   workflow_dispatch:
 jobs:
-  experiment:
-    name: experiment
-    runs-on: ubuntu-latest
-    environment:
-        name: dev
-    steps:
-    - name: check out repo
-      uses: actions/checkout@v2
-    - name: install az ml extension
-      run: az extension add -n ml -y
-    - name: azure login
-      uses: azure/actions/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: set current directory
-      run: cd src
-    - name: run pipeline
-      run: az ml job create --file src/experiment.yml --resource-group Learn_MLOps --workspace-name MLOps_WS
-
-  production:
-    needs: experiment
-    name: production
-    runs-on: ubuntu-latest
-    environment:
-        name: prod
-    steps:
-    - name: check out repo
-      uses: actions/checkout@v2
-    - name: install az ml extension
-      run: az extension add -n ml -y
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: set current directory
-      run: cd src
-    - name: run pipeline
-      run: az ml job create --file src/production.yml --resource-group Learn_MLOps --workspace-name mlops_ws_prod
-
   create-endpoint:
     needs: [experiment, production]
     name: create-endpoint
@@ -66,8 +27,30 @@ jobs:
         #      az ml ${{ inputs.endpoint_type }}-endpoint create --name ${{ inputs.endpoint_name }} \
         #      -f ${{ github.workspace }}/${{ inputs.endpoint_file }} --resource-group ${{ inputs.resource_group }} \
         #      --workspace-name ${{ inputs.workspace_name }}
-              az ml online-endpoint create --name pipeline-endpoint-1  --resource-group Learn_MLOps --workspace-name mlops_ws_prod
+              az ml online-endpoint create --name pipeline-endpoint-2  --resource-group Learn_MLOps --workspace-name mlops_ws_prod
 
 
+  create-deployment:
+    needs: [create-endpoint]
+    name: create-deployment
+    runs-on: ubuntu-latest
+    environment:
+        name: prod
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: "Az CLI login"
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: install-extension
+      run: az extension add -n ml -y
+    - name: update-extension
+      run: az extension update -n ml
+    - name: set current directory
+      run: cd src
+    - name: create-online-deployment
+      run: |
+              az ml online-deployment create --name mlflow-deployment --endpoint pipeline-endpoint-2 -f src/deployment.yaml --all-traffic --resource-group Learn_MLOps --workspace-name mlops_ws_prod
 
 
