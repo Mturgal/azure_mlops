@@ -4,7 +4,7 @@ endpoint_name: pipeline-endpoint-2
 model:
   name: log-regression
   version: 7
-  path: azureml://locations/westeurope/workspaces/baed037d-fc5e-4a61-9f26-6bc534c4b9c3/models/log_regression/versions/7
+  path: azureml://locations/westeurope/workspaces/mlops_ws_prod/models/log_regression/versions/7
   type: mlflow_model
 instance_type: Standard_DS3_v2
 instance_count: 1
