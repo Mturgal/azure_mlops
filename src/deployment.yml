@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: mlflow-deployment
+endpoint_name: pipeline-endpoint-1
+model:
+  name: log_regression
+  version: 4
+  local_path: model
+  model_format: mlflow
+instance_type: Standard_F2s_v2
+instance_count: 1
