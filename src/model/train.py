@@ -9,6 +9,9 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score
+from mlflow.models import infer_signature
+from mlflow.utils.environment import _mlflow_conda_env
+import random
 
 
 def parse_args():
@@ -47,6 +50,7 @@ def split_data(df):
 
 def train_model(reg_rate, X_train, y_train):
     # train model
+    mlflow.autolog()
     lg = LogisticRegression(C=1/reg_rate, solver="liblinear")
     lg.fit(X_train, y_train)
 
@@ -68,6 +72,7 @@ def get_model_metrics(class_model, X_test, y_test):
 
 def main():
     # enable autologging
+    #mlflow.sklearn.autolog(log_models=False)
     mlflow.sklearn.autolog()
 
     args = parse_args()
@@ -83,6 +88,27 @@ def main():
     model_metrics = get_model_metrics(lg, X_test, y_test)
     print(model_metrics["accuracy"])
     print(model_metrics["f1"])
+    # Signature
+#    signature = infer_signature(X_test, y_test)
+#
+#    # Conda environment
+#    custom_env =_mlflow_conda_env(
+#        additional_conda_deps=None,
+#        #additional_pip_deps=["xgboost==1.5.2"],
+#        additional_conda_channels=None,
+#    )
+#
+#    # Sample
+#    #input_example = X_train.sample(n=1)
+#    input_example = X_train[random.randint(0,len(X_train)-1)]
+#
+#    # Log the model manually
+#    mlflow.sklearn.log_model(lg,
+#                             artifact_path="classifier",
+#                             conda_env=custom_env,
+#                             signature=signature,
+#                             input_example=input_example)
+
     model_name = "logistic_regression_diabetes.pkl"
     joblib.dump(value=lg, filename=model_name)
 
