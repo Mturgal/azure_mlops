@@ -11,7 +11,7 @@ inputs:
     path: azureml:diabetes-dev-folder:1
   reg_rate: 0.01
     #environment: azureml:sklearn-1.1:20
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:mlflow-compute
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+  #compute: azureml:mlflow-compute
 experiment_name: mlflow_train_example
 description: Train a classification model on a sample customer dataset.

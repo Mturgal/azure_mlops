@@ -1,10 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: sklearn-deployment-2
-endpoint_name: endpoint-metin
-model:
-  name: mir-sample-sklearn-ncd-model-2
-  version: 1
-  path: ../mlruns/0/b1c6065d75744fc2b094a37886201c4e/artifacts/classifier
-  type: mlflow_model
+name: mlflow-sklearn-deployment-3
+endpoint_name: exercise-endpoint
+model: azureml:job-output-model-mlflow:1
 instance_type: Standard_DS2_v2
 instance_count: 1
