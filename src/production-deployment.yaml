@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: production-deployment
+endpoint_name: pipeline-endpoint-2
+model: azureml:production-model:1
+instance_type: Standard_DS2_v2
+instance_count: 1
