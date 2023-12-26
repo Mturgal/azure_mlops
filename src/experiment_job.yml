@@ -8,9 +8,9 @@ command: >-
 inputs:
   training_data: 
     type: uri_folder 
-    path: azureml:diabetes-prod-folder:1
+    path: azureml:diabetes-dev-folder:1
   reg_rate: 0.01
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
   #compute: azureml:playground-metin-turgal
-experiment_name: github_actions_job_submit
+experiment_name: github_actions_job_submit_experiment
 description: train data

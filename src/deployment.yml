@@ -1,6 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: mlflow-deployment
-endpoint_name: pipeline-endpoint-2
-model: azureml:log_regression:11
-instance_type: Standard_E2s_v3
+name: mlflow-deployment-from-job
+endpoint_name: endpoint-metin
+model: azureml:job-output-model:1
+instance_type: Standard_E4s_v3
 instance_count: 1
+  
+
