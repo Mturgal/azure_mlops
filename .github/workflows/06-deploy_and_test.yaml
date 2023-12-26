@@ -3,10 +3,6 @@ name: deployment-pipeline
 on:
   workflow_dispatch:
 
-
-
-    run_id=$(az ml job create -f src/production_job.yml --query name -o tsv)
-
 jobs:
   experiment:
     name: experiment
