@@ -89,7 +89,7 @@ jobs:
       run: cd src
     - name: create-environment-from-file
       run: |
-              az ml model create --name production-model -type mlflow-model --version 1 --path azureml://jobs/$run_id/outputs/artifacts/paths/model/ -w mlops_ws_prod
+              az ml model create --name production-model --type mlflow-model --version 1 --path azureml://jobs/$run_id/outputs/artifacts/paths/model/ -w mlops_ws_prod
               
 
   create-deployment:
