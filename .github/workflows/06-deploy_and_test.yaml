@@ -51,6 +51,6 @@ jobs:
       run: cd src
     - name: create-online-deployment
       run: |
-              az ml online-deployment create --name mlflow-deployment --endpoint pipeline-endpoint-2 -f src/deployment.yml --all-traffic --resource-group Learn_MLOps --workspace-name mlops_ws_prod
+           az ml online-deployment create --name mlflow-deployment --endpoint pipeline-endpoint-2 -f src/deployment.yml --all-traffic --resource-group Learn_MLOps --workspace-name mlops_ws_prod
 
 

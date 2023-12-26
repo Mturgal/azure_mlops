@@ -23,7 +23,7 @@ jobs:
     - name: set current directory
       run: cd src
     - name: run pipeline
-      run: az ml job create --file src/experiment.yml --resource-group Learn_MLOps --workspace-name MLOps_WS
+      run: az ml job create --file src/experiment_job.yml --resource-group Learn_MLOps --workspace-name MLOps_WS
 
   production:
     needs: experiment
@@ -43,4 +43,4 @@ jobs:
     - name: set current directory
       run: cd src
     - name: run pipeline
-      run: az ml job create --file src/production.yml --resource-group Learn_MLOps --workspace-name mlops_ws_prod
+      run: az ml job create --file src/production_job.yml --resource-group Learn_MLOps --workspace-name mlops_ws_prod
