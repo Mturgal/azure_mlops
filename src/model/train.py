@@ -9,9 +9,8 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score
-from mlflow.models import infer_signature
-from mlflow.utils.environment import _mlflow_conda_env
-import random
+# from mlflow.models import infer_signature
+# from mlflow.utils.environment import _mlflow_conda_env
 
 
 def parse_args():
@@ -29,7 +28,6 @@ def parse_args():
 
     # return args
     return args
-
 
 
 def get_csvs_df(path):
@@ -53,7 +51,6 @@ def train_model(reg_rate, X_train, y_train):
     mlflow.autolog()
     lg = LogisticRegression(C=1/reg_rate, solver="liblinear")
     lg.fit(X_train, y_train)
-
 #    print("Registering the model via MLFlow")
 #    mlflow.sklearn.log_model(
 #        sk_model=lg,
@@ -62,19 +59,19 @@ def train_model(reg_rate, X_train, y_train):
 #    )
     return lg
 
+
 def get_model_metrics(class_model, X_test, y_test):
     preds = class_model.predict(X_test)
     accuracy = accuracy_score(preds, y_test)
     f1 = f1_score(preds, y_test)
     metrics = {"accuracy": accuracy, "f1": f1}
     return metrics
-    
+
 
 def main():
     # enable autologging
-    #mlflow.sklearn.autolog(log_models=False)
+    # mlflow.sklearn.autolog(log_models=False)
     mlflow.sklearn.autolog()
-
     args = parse_args()
 
     # read data
@@ -113,13 +110,11 @@ def main():
     joblib.dump(value=lg, filename=model_name)
 
 
-
 # run script
 if __name__ == "__main__":
     # add space in logs
     print("\n\n")
     print("*" * 60)
-
 
     # run main function
     main()
