@@ -70,8 +70,10 @@ jobs:
               az ml online-endpoint create --name pipeline-endpoint-2  --resource-group Learn_MLOps --workspace-name mlops_ws_prod
 
   register-model:
-    needs: create-endpoint
+    needs: [production, create-endpoint]
     name: register-model
+    with: 
+      run_id: ${{ needs.production.outputs.run_id }}
     runs-on: ubuntu-latest
     environment:
         name: prod
