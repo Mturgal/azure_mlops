@@ -29,6 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     environment:
         name: prod
+    outputs:
+      run_id: ${{steps.run_pipeline.outputs.run_id}}
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -40,10 +42,8 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: set current directory
       run: cd src
-    - name: run pipeline
+    - id: run_pipeline
       run: bash src/job_script.sh
-    - name: list all env variables
-      run: env
 
   create-endpoint:
     needs: production
@@ -90,11 +90,12 @@ jobs:
       run: az extension update -n ml
     - name: set current directory
       run: cd src
-    - name: list all env variables
-      run: env
-    - name: create-environment-from-file
+    - name: create-environment-from-
+      env:
+        RUN_ID: ${{needs.production.outputs.run_id}}
       run: |
-              az ml model create --name production-model --type mlflow_model --version 1 --path azureml://jobs/$run_id/outputs/artifacts/paths/model/ -w mlops_ws_prod
+              az ml model create --name production-model --type mlflow_model --version 1 --path azureml://jobs/$RUN_ID/outputs/artifacts/paths/model/ -w mlops_ws_prod
+              echo "$RUN_ID"
               
 
   create-deployment:
