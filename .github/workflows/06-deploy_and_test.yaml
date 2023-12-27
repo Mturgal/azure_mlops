@@ -41,7 +41,7 @@ jobs:
     - name: set current directory
       run: cd src
     - name: run pipeline
-      run: bash job_script.sh
+      run: bash src/job_script.sh
 
   create-endpoint:
     needs: production
