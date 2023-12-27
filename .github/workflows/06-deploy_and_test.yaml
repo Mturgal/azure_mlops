@@ -42,6 +42,8 @@ jobs:
       run: cd src
     - name: run pipeline
       run: bash src/job_script.sh
+    - name: list all env variables
+      run: env
 
   create-endpoint:
     needs: production
@@ -72,8 +74,6 @@ jobs:
   register-model:
     needs: [production, create-endpoint]
     name: register-model
-    with: 
-      run_id: ${{ needs.production.outputs.run_id }}
     runs-on: ubuntu-latest
     environment:
         name: prod
@@ -90,6 +90,8 @@ jobs:
       run: az extension update -n ml
     - name: set current directory
       run: cd src
+    - name: list all env variables
+      run: env
     - name: create-environment-from-file
       run: |
               az ml model create --name production-model --type mlflow_model --version 1 --path azureml://jobs/$run_id/outputs/artifacts/paths/model/ -w mlops_ws_prod
