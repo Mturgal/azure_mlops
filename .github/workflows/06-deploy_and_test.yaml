@@ -49,7 +49,7 @@ jobs:
             exit 3
           fi
           az ml job show -n $run_id --web
-          status=$(az ml job show -n $run_id  --resource-group Learn_MLOps --workspace-name mlops_ws_prod --query status -o tsv)
+          status=$(az ml job show -n $run_id   --query status -o tsv --resource-group Learn_MLOps --workspace-name mlops_ws_prod)
           if [[ -z "$status" ]]
           then
             echo "Status query failed"
@@ -59,7 +59,7 @@ jobs:
           while [[ ${running[*]} =~ $status ]]
           do
             sleep 15 
-            status=$(az ml job show -n $run_id  --resource-group Learn_MLOps --workspace-name mlops_ws_prod --query status -o tsv)
+            status=$(az ml job show -n $run_id  --query status -o tsv --resource-group Learn_MLOps --workspace-name mlops_ws_prod)
             echo $status
           done
           if [[ "$status" != "Completed" ]]  
