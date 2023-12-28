@@ -6,7 +6,7 @@ then
   echo "Job creation failed"
   exit 3
 fi
-az ml job show -n $run_id --web
+az ml job show -n $run_id --resource-group Learn_MLOps --workspace-name mlops_ws_prod --web
 status=$(az ml job show -n $run_id   --query status -o tsv --resource-group Learn_MLOps --workspace-name mlops_ws_prod)
 if [[ -z "$status" ]]
 then
@@ -18,12 +18,14 @@ while [[ ${running[*]} =~ $status ]]
 do
   sleep 15 
   status=$(az ml job show -n $run_id  --query status -o tsv --resource-group Learn_MLOps --workspace-name mlops_ws_prod)
-  echo $status
+  echo "$status and run id: $run_id"
+
 done
 if [[ "$status" != "Completed" ]]  
 then
   echo "Training Job failed or canceled"
   exit 3
 fi
+echo $run_id
 
 
