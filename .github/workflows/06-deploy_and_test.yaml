@@ -60,5 +60,8 @@ jobs:
     - name: create-online-deployment 
       run: |
            az ml online-deployment create --name production-deployment --endpoint pipeline-endpoint-2 -f src/production-deployment.yaml --all-traffic --resource-group Learn_MLOps --workspace-name mlops_ws_prod 
+    - name: test the model
+      run: az ml online-endpoint invoke -n pipeline-endpoint-2 --request-file src/sample-request.json --resource-group Learn_MLOps --workspace-name mlops_ws_prod 
+
 
 
