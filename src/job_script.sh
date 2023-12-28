@@ -26,6 +26,6 @@ then
   echo "Training Job failed or canceled"
   exit 3
 fi
-echo $run_id
+echo "run_id=$run_id" >> $GITHUB_OUTPUT
 
 
