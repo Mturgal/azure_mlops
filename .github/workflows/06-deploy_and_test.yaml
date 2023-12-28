@@ -42,8 +42,10 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: set current directory
       run: cd src
-    - id: run_pipeline
+    - name: run pipeline
+      id: run_pipeline
       run: bash src/job_script.sh
+
 
   create-endpoint:
     needs: production
@@ -90,12 +92,12 @@ jobs:
       run: az extension update -n ml
     - name: set current directory
       run: cd src
-    - name: create-environment-from-
+    - name: create-environment-from-file
       env:
-        RUN_ID: ${{needs.production.outputs.run_id}}
+        RUN_ID: ${{ needs.production.outputs.run_id }}
       run: |
-              az ml model create --name production-model --type mlflow_model --version 1 --path azureml://jobs/$RUN_ID/outputs/artifacts/paths/model/ -w mlops_ws_prod
-              echo "$RUN_ID"
+              az ml model create --name production-model --type mlflow_model --version 1 --path azureml://jobs/${{ needs.production.outputs.run_id }}/outputs/artifacts/paths/model/ -w mlops_ws_prod
+              echo ${{ needs.production.outputs.run_id }}
               
 
   create-deployment:
