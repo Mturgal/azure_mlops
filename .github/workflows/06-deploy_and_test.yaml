@@ -29,8 +29,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
         name: prod
-    outputs:
-      run_id: ${{steps.run_pipeline.outputs.run_id}}
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -46,7 +44,16 @@ jobs:
       id: run_pipeline
       run: bash src/job_script.sh
     - name: create-endpoint
-      run: az ml online-endpoint create --name pipeline-endpoint-2  --resource-group Learn_MLOps --workspace-name mlops_ws_prod
+      run: |
+        ENDPOINT_EXISTS=$(az ml online-endpoint list --resource-group Learn_MLOps --workspace-name mlops_ws_prod -o tsv --query "[?name=='pipeline-endpoint-2')][name]" | wc -l)
+        echo "pipeline-endpoint-2  $ENDPOINT_EXISTS"
+        az ml online-endpoint list --resource-group Learn_MLOps --workspace-name mlops_ws_prod -o tsv
+
+        if [[ ENDPOINT_EXISTS -ne 1 ]]; then
+            az ml online-endpoint create --name pipeline-endpoint-2  --resource-group Learn_MLOps --workspace-name mlops_ws_prod
+        else
+            echo "Endpoint exists"
+        fi
     - name: register-model
       run: |
               az ml model create --name production-model --type mlflow_model --version 1 --path azureml://jobs/${JOB_ID}/outputs/artifacts/paths/model/ -w mlops_ws_prod
