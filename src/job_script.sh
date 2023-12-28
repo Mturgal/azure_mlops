@@ -10,7 +10,7 @@ az ml job show -n $run_id --web
 status=$(az ml job show -n $run_id   --query status -o tsv --resource-group Learn_MLOps --workspace-name mlops_ws_prod)
 if [[ -z "$status" ]]
 then
-  echo "Status query failed"
+  echo "Status query failed and run id: $run_id"
   exit 4
 fi
 running=("NotStarted" "Queued" "Starting" "Preparing" "Running" "Finalizing" "CancelRequested")
