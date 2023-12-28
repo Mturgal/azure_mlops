@@ -45,80 +45,12 @@ jobs:
     - name: run pipeline
       id: run_pipeline
       run: bash src/job_script.sh
-
-
-  create-endpoint:
-    needs: production
-    name: create-endpoint
-    runs-on: ubuntu-latest
-    environment:
-        name: prod
-    steps:
-    - name: checkout
-      uses: actions/checkout@v2
-    - name: "Az CLI login"
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: install-extension
-      run: az extension add -n ml -y
-    - name: update-extension
-      run: az extension update -n ml
-    - name: set current directory
-      run: cd src
-    - name: create-environment-from-file
+    - name: create-endpoint
+      run: az ml online-endpoint create --name pipeline-endpoint-2  --resource-group Learn_MLOps --workspace-name mlops_ws_prod
+    - name: register-model
       run: |
-        #      az ml ${{ inputs.endpoint_type }}-endpoint create --name ${{ inputs.endpoint_name }} \
-        #      -f ${{ github.workspace }}/${{ inputs.endpoint_file }} --resource-group ${{ inputs.resource_group }} \
-        #      --workspace-name ${{ inputs.workspace_name }}
-              az ml online-endpoint create --name pipeline-endpoint-2  --resource-group Learn_MLOps --workspace-name mlops_ws_prod
-
-  register-model:
-    needs: [production, create-endpoint]
-    name: register-model
-    runs-on: ubuntu-latest
-    environment:
-        name: prod
-    steps:
-    - name: checkout
-      uses: actions/checkout@v2
-    - name: "Az CLI login"
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: install-extension
-      run: az extension add -n ml -y
-    - name: update-extension
-      run: az extension update -n ml
-    - name: set current directory
-      run: cd src
-    - name: create-environment-from-file
-      env:
-        RUN_ID: ${{ needs.production.outputs.run_id }}
-      run: |
-              az ml model create --name production-model --type mlflow_model --version 1 --path azureml://jobs/${{ needs.production.outputs.run_id }}/outputs/artifacts/paths/model/ -w mlops_ws_prod
-              echo ${{ needs.production.outputs.run_id }}
-              
-
-  create-deployment:
-    needs: register-model
-    name: create-deployment
-    runs-on: ubuntu-latest
-    environment:
-        name: prod
-    steps:
-    - name: checkout
-      uses: actions/checkout@v2
-    - name: "Az CLI login"
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: install-extension
-      run: az extension add -n ml -y
-    - name: update-extension
-      run: az extension update -n ml
-    - name: set current directory
-      run: cd src
+              az ml model create --name production-model --type mlflow_model --version 1 --path azureml://jobs/${{ steps.run_pipeline.outputs.run_id }}/outputs/artifacts/paths/model/ -w mlops_ws_prod
+              echo ${{ steps.run_pipelin.outputs.run_id }}
     - name: create-online-deployment
       run: |
            az ml online-deployment create --name production-deployment --endpoint pipeline-endpoint-2 -f src/production-deployment.yaml --all-traffic --resource-group Learn_MLOps --workspace-name mlops_ws_prod
