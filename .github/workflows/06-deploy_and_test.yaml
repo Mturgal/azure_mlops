@@ -57,8 +57,6 @@ jobs:
     - name: register-model
       run: |
               az ml model create --name production-model --type mlflow_model --version 1 --path azureml://jobs/${{ steps.run_pipeline.outputs.run_id }}/outputs/artifacts/paths/model/ -w mlops_ws_prod
-      env:
-        JOB_ID: ${{ steps.run_pipeline.outputs.run_id }}
     - name: create-online-deployment
       run: |
            az ml online-deployment create --name production-deployment --endpoint pipeline-endpoint-2 -f src/production-deployment.yaml --all-traffic --resource-group Learn_MLOps --workspace-name mlops_ws_prod
